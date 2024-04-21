@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {useState } from "react";
 import styled, { css } from "styled-components";
 
 import { persons } from "./CardData";
@@ -95,98 +95,42 @@ const PersonList = styled.ul`
   }
 `;
 
+
 const CarousalItem = styled.li`
-  cursor: pointer;
+  position: relative;
+  list-style: none;
   width: 8%;
-  &:first-child {
-    width: 1%;
+  transition: width 0.5s ease;
+
+  &::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -10px;
+    right: -10px;
+    content: "";
   }
+
+  &:first-child,
   &:last-child {
     width: 1%;
+    pointer-events: none;
+    opacity: 0.8;
   }
-  
-  ${({ activeItem, index }) => activeItem === index && css`
-    width: 48%;
-    @media (min-width: 768px) {
-      transition: width var(--transition, 200ms ease-in);
-    }
-  `}
 
-  @media (min-width: 768px) {
-    position: relative;
-
-    &:before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: -10px;
-      right: -10px;
-      top: 0;
-      background-color: white;
-      display: none;
-    }
-
-    &:hover:not(:first-child):not(:last-child),
-    &:not(:hover):not(:first-child):not(:last-child):hover ~ & {
+  &:hover:not(:first-child):not(:last-child) {
+    width: 12%;
+    & ~ li:not(:first-child):not(:last-child) {
       width: 7%;
     }
-    
-    &:hover:not(:first-child):not(:last-child),
-    &:not(:hover):not(:first-child):not(:last-child):hover {
-      width: 12%;
-    }
-
-    &:first-child {
-      pointer-events: none;
-      .img:first-child {
-        opacity: 0;
-      }
-    }
-    
-    &:last-child {
-      pointer-events: none;
-      .img:last-child {
-        opacity: 0;
-      }
-    }
   }
+
+  ${(props) =>
+    props["aria-current"] &&
+    css`
+      width: 40%;
+    `}
 `;
-
-// const CarousalItem = styled.li`
-//   position: relative;
-//   list-style: none;
-//   width: 8%;
-//   transition: width 0.5s ease;
-
-//   &::before {
-//     position: absolute;
-//     top: 0;
-//     bottom: 0;
-//     left: -10px;
-//     right: -10px;
-//     content: "";
-//   }
-
-//   &:first-child,
-//   &:last-child {
-//     width: 1%;
-//     pointer-events: none;
-//     opacity: 0.8;
-//   }
-
-//   &:hover:not(:first-child):not(:last-child) {
-//     width: 12%;
-//     & ~ li:not(:first-child):not(:last-child) {
-//       width: 7%;
-//     }
-//   }
-
-//   ${(props) =>
-//     props["aria-current"] &&
-//     css`
-//       width: 40%;
-//     `}
-// `;
 
 const ImageContainer = styled.div`
   width: 100%;
